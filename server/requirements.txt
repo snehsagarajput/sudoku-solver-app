@@ -1,0 +1,6 @@
+Flask==1.1.2
+flask-cors==3.0.9
+gunicorn==20.0.4
+numpy==1.18.5
+opencv-contrib-python-headless==4.4.0.44
+scikit-image==0.16.2

@@ -18,10 +18,12 @@ EMPTY = 0
 def get_board(model, image_path = "", DEBUG_PRINT = False, CURRENT_FILE = os.getcwd()):
     input_sudoku_img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     resized_sudoku_img = cv2.resize(input_sudoku_img, (1200, 900), interpolation=cv2.INTER_AREA)
+    processed_sudoku_img = None
     try:
           processed_sudoku_img = preprocess_sudoku_board(resized_sudoku_img.copy(), MNIST_DIMENSION)
     except:
-          np.zeros((9, 9), dtype=np.int8)
+          DEBUG_PRINT and print("Sending Empty Sudoku")
+          return np.zeros((9, 9), dtype=np.int8)
     sudoku_board = np.zeros((9, 9), dtype=np.int8)
 
     for index, square in enumerate(processed_sudoku_img):

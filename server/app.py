@@ -27,9 +27,9 @@ app = Flask(__name__, template_folder=CURRENT_FILE+"/template")
 cors = CORS(app)
 
 # Load Model
-DEBUG_PRINT and print("Loading Model....")
+DEBUG_PRINT and print("Loading Model.....")
 model = cv2.dnn.readNetFromTensorflow(CURRENT_FILE + "/model/cv-final-model.pb")
-DEBUG_PRINT and print("Model Loaded....")
+DEBUG_PRINT and print("Model Loaded.....")
     
 
 

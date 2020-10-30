@@ -9,8 +9,9 @@ try:
 except:
     import cv2
 
-from utility.imutils import matrix_to_string
+from utility.imutils import matrix_to_string, string_to_board, print_board
 from utility.main import get_board
+from utility.sudokuSolver import solve_board
 
 
 '''
@@ -18,7 +19,7 @@ TYPE : Build Type
 0 : Production
 1 : Development
 '''
-TYPE = 0 
+TYPE = 0
 CURRENT_FILE = os.path.dirname(os.path.abspath(__file__))
 DEBUG_PRINT = False
 
@@ -27,10 +28,10 @@ app = Flask(__name__, template_folder=CURRENT_FILE+"/template")
 cors = CORS(app)
 
 # Load Model
-DEBUG_PRINT and print("Loading Model.....")
+DEBUG_PRINT and print("Loading Model....")
 model = cv2.dnn.readNetFromTensorflow(CURRENT_FILE + "/model/cv-final-model.pb")
-DEBUG_PRINT and print("Model Loaded.....")
-    
+DEBUG_PRINT and print("Model Loaded....")
+
 
 
 @app.route('/')
@@ -83,6 +84,23 @@ def getImages():
         response = make_response('Some error Occured', 400)
         response.mimetype = 'text/plain'
         return response
+
+@app.route('/solve/<board_as_string>')
+def solve(board_as_string):
+    try:
+        start=time.time()
+        board = string_to_board(board_as_string)
+        DEBUG_PRINT and print("Received Board : ",board)
+        solved_board = solve_board(board)
+        time_taken=str(time.time()-start)[:4]
+        DEBUG_PRINT and print("Solved in : "+ time_taken +" Seconds")
+        DEBUG_PRINT and solved_board
+        return solved_board + time_taken
+    except Exception as e:
+        DEBUG_PRINT and print("\n..........ERROR..........\nCheck for following error:")
+        DEBUG_PRINT and print(e, file=sys.stderr)
+        DEBUG_PRINT and print("\nCheck for above error\n..........ERROR..........\n")
+        return "failed"
 
 
 TYPE and app.run()

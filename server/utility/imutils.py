@@ -13,9 +13,15 @@ def print_board(sudoku_board):
     print(" -------------------------")
 
 def matrix_to_string(matrix):
-    st = "" 
+    st = ""
     for sub_array in matrix:
         for element in sub_array:
             st += str(element) + " "
     return st
-        
+
+def string_to_board(string):
+    board=[]
+    singleRow = [int(i) for i in string]
+    for i in range(9):
+        board.append(singleRow[9*i:9*(i+1)])
+    return board

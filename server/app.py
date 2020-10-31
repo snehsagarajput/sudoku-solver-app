@@ -9,9 +9,9 @@ try:
 except:
     import cv2
 
-from utility.imutils import matrix_to_string, string_to_board, print_board
+from utility.imutils import matrix_to_string, string_to_board
 from utility.main import get_board
-from utility.sudokuSolver import solve_board
+from utility.masterSolver import solve_board
 
 
 '''
@@ -22,16 +22,18 @@ TYPE : Build Type
 TYPE = 0
 CURRENT_FILE = os.path.dirname(os.path.abspath(__file__))
 DEBUG_PRINT = False
+TIMEOUT = 3
+
 
 #Flask App
 app = Flask(__name__, template_folder=CURRENT_FILE+"/template")
 cors = CORS(app)
 
-# Load Model
-DEBUG_PRINT and print("Loading Model....")
-model = cv2.dnn.readNetFromTensorflow(CURRENT_FILE + "/model/cv-final-model.pb")
-DEBUG_PRINT and print("Model Loaded....")
 
+# Load Model
+print("Loading Model....")
+model = cv2.dnn.readNetFromTensorflow(CURRENT_FILE + "/model/cv-final-model.pb")
+print("Model Loaded....")
 
 
 @app.route('/')
@@ -55,6 +57,19 @@ def debug_status():
     return "Debugging : " + str(DEBUG_PRINT)
 
 
+@app.route('/timeout/<state>')
+def timeout(state):
+    global TIMEOUT
+    if ord(state) in range(ord("1"),ord("9")+1):
+        TIMEOUT = int(state)
+    return "Timeout : " + str(TIMEOUT)
+
+
+@app.route('/timeout')
+def timeout_status():
+    return "Timeout : " + str(TIMEOUT)
+
+
 @app.route('/activate')
 def activate():
     DEBUG_PRINT and print("Server Activated")
@@ -63,11 +78,11 @@ def activate():
 
 @app.route('/upload', methods=['POST'])
 def getImages():
-    start = time.time()
     file = request.files['source']
     file_path = os.path.join(CURRENT_FILE, 'source.jpg')
     file.save(file_path)
     try:
+        start = time.time()
         DEBUG_PRINT and print("Starting Process......")
         board = get_board(model, file_path, DEBUG_PRINT, CURRENT_FILE)
         board_as_string = matrix_to_string(board)
@@ -88,14 +103,12 @@ def getImages():
 @app.route('/solve/<board_as_string>')
 def solve(board_as_string):
     try:
-        start=time.time()
         board = string_to_board(board_as_string)
         DEBUG_PRINT and print("Received Board : ",board)
-        solved_board = solve_board(board)
-        time_taken=str(time.time()-start)[:4]
+        status, solved_board, time_taken = solve_board(board)
         DEBUG_PRINT and print("Solved in : "+ time_taken +" Seconds")
         DEBUG_PRINT and solved_board
-        return solved_board + time_taken
+        return solved_board + time_taken + " " + str(int(status))
     except Exception as e:
         DEBUG_PRINT and print("\n..........ERROR..........\nCheck for following error:")
         DEBUG_PRINT and print(e, file=sys.stderr)

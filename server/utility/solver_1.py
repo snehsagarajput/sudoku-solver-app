@@ -1,7 +1,7 @@
 import copy
 import sys
 
-errorRow= None
+
 
 class Set:
     def __init__(self, cells, indicies):
@@ -296,33 +296,20 @@ def solve(puzzle):
         possible.tryAllCombinations()
 
 
-def solve_board(board):
+def solve_board_1(board, stop_it, result):
     puzzle = Puzzle()
     code = puzzle.read(board) ##200===Success else rowNo returned with error
     valid = puzzle.isValid()
     if code==200 and valid:
         solve(puzzle)
         st = puzzle.show()
-        return st
+        result.extend([True, st])
     else:
         if valid:
-            return "error"
+            result.extend([False, "error"])
         elif code==200:
-            return "invalid"
+            result.extend([False, "invalid "])
         else:
-            return str(code) ##rowNo having error
+           result.extend([False, str(code)+" "]) ##rowNo having error
+    stop_it.set()
 
-'''
-###Testing Code
-def solverr(board):
-    puzzle = Puzzle()
-    puzzle.read(board)
-    print(puzzle.isValid())
-    solve(puzzle)
-    print(puzzle.show())
-    
-
-if __name__ == "__main__":
-    sud=[[5, 3, 0, 0, 7, 0, 0, 0, 0], [6, 0, 0, 1, 9, 5, 0, 0, 0], [0, 9, 8, 0, 0, 0, 0, 6, 0], [8, 0, 0, 0, 6, 0, 0, 0, 3], [4, 0, 0, 8, 0, 3, 0, 0, 1], [7, 0, 0, 0, 2, 0, 0, 0, 6], [0, 6, 0, 0, 0, 0, 2, 8, 0], [0, 0, 0, 4, 1, 9, 0, 0, 5], [0, 0, 0, 0, 8, 0, 0, 7, 9]]
-    solverr(sud)
-'''

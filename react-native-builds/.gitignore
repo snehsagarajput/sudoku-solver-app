@@ -60,3 +60,6 @@ buck-out/
 
 #Big Java Unneccesary files
 *.hprof
+
+#Secret Keystore
+my-release-key.keystore

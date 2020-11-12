@@ -4,9 +4,14 @@
 
 An android app built with React-Native to solve any Sudoku Puzzle not only by entering the Sudoku Puzzle manually but also **by just scanning the Sudoku Puzzle**.
 
-# Access
-##### Download the Android App or try the App on the Web using Appetize: <a target="blank_" href="https://sudoku-solver-app.ml">https://sudoku-solver-app.ml</a>
 
+
+
+
+## Access
+###### Download the Android App or try the App on the Web using Appetize: <a target="blank_" href="https://sudoku-solver-app.ml">https://sudoku-solver-app.ml</a>
+
+<img src="assests/demo.gif" alt="demo" align="right" height384 width=175>
 
 ## Built With
 * [React-Native](https://reactnative.dev/)

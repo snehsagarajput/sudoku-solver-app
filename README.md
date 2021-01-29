@@ -9,7 +9,7 @@ An android app built with React-Native to solve any Sudoku Puzzle not only by en
 
 
 ## Access
-###### Download the Android App or try the App on the Web using Appetize: <a target="blank_" href="https://sudoku-solver-app.ml">https://sudoku-solver-app.ml</a>
+###### Download the Android App or try the App on the Web using Appetize: <a target="blank_" href="https://sudokusolver.pythonanywhere.com/">https://sudokusolver.pythonanywhere.com/</a>
 
 <img src="assests/demo.gif" alt="demo" align="right" height384 width=175>
 
